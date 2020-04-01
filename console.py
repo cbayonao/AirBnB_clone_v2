@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the console for AirBnB"""
+"""This is the console for AirBnB project"""
 import cmd
 from models import storage
 from datetime import datetime
