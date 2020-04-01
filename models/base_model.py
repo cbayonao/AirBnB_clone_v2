@@ -74,8 +74,6 @@ class BaseModel:
 
         if "_sa_instance_state" in my_dict.keys():
             del(my_dict['_sa_instance_state'])
-            print ("deleted OK")
-
         return my_dict
 
     def delete(self):
