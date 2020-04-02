@@ -20,6 +20,9 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
+            """
+            Instances of cities in list
+            """
             from models import storage
             city_x_state = []
             for city in storage.all('City').values():
