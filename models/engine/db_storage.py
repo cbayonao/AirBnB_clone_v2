@@ -4,7 +4,7 @@ from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
 
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -23,11 +23,10 @@ class DBStorage:
     """
     __engine = None
     __session = None
-    models = {User, State, City, Amenity, Place, Review}
 
     def __init__(self):
         """
-        4. all of the following values must be retrieved via
+        all of the following values must be retrieved via
         environment variables:
         drop all tables if the environment variable HBNB_ENV is equal to test
         create the engine (self.__engine)
@@ -48,15 +47,19 @@ class DBStorage:
         """
         returns a dictionary
         """
-        sql_Dict = {}
-        models = self.models
         if cls:
-            models = {cls}
-        for model in models:
-            objects = self.__session.query(model).all()
-            for obj in objects:
-                key = "{}.{}".format(type(obj).__name__, obj.id)
-                sql_Dict[key] = obj
+            objs = self.__session.query(self.classes()[cls])
+        else:
+            objs = self.__session.query(State).all()
+            objs += self.__session.query(City).all()
+            objs += self.__session.query(User).all()
+            objs += self.__session.query(Place).all()
+            objs += self.__session.query(Amenity).all()
+            objs += self.__session.query(Review).all()
+        sql_Dict = {}
+        for obj in objs:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            sql_Dict[key] = obj
         return sql_Dict
 
     def new(self, obj):
@@ -64,8 +67,7 @@ class DBStorage:
         new(self, obj): add the object to the current
         database session (self.__session)
         """
-        if obj:
-            self.__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """
