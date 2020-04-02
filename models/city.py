@@ -2,6 +2,8 @@
 """This is the city class"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+
 
 class City(BaseModel, Base):
     """This is the class for City
