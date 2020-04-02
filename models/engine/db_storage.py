@@ -3,7 +3,6 @@
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
-
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
@@ -41,25 +40,26 @@ class DBStorage:
                                       format(user, password, host, db),
                                       pool_pre_ping=True)
         if env == "test":
-            Base.metadata.drop_all(bind=self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
         returns a dictionary
         """
-        if cls:
-            objs = self.__session.query(self.classes()[cls])
-        else:
-            objs = self.__session.query(State).all()
-            objs += self.__session.query(City).all()
-            objs += self.__session.query(User).all()
-            objs += self.__session.query(Place).all()
-            objs += self.__session.query(Amenity).all()
-            objs += self.__session.query(Review).all()
         sql_Dict = {}
-        for obj in objs:
-            key = '{}.{}'.format(type(obj).__name__, obj.id)
-            sql_Dict[key] = obj
+        dic = ['State', 'City']
+        if cls:
+            cls = eval(cls)
+            objects = self.__session.query(cls).all()
+            for obj in objects:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                sql_Dict[key] = obj
+        else:
+            for model in dic:
+                objects = self.__session.query(eval(model)).all()
+                for obj in objects:
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    sql_Dict[key] = obj
         return sql_Dict
 
     def new(self, obj):
