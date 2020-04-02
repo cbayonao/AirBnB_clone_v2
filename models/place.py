@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 """This is the place class"""
+from os import getenv
+
+import models
+from models.review import Review
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 
 
@@ -32,3 +36,14 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     amenity_ids = []
+
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship('Review', backref='place',
+                               cascade='all, delete, delete-orphan')
+    else:
+        @property
+        def reviews(self):
+            review = []
+            for review in models.storage.all(Review):
+                if review.place_id == self.id:
+                    return review
