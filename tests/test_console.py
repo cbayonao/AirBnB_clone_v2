@@ -97,7 +97,6 @@ class TestConsole(unittest.TestCase):
             self.assertIn('val1', f.getvalue())
             self.assertIn('key2', f.getvalue())
             self.assertIn('val2', f.getvalue())
-        with patch
 
     def test_show(self):
         """Test show command inpout"""
