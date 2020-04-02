@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """This is the place class"""
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
 
 
-class Place(BaseModel, Base):
+class Place(BaseModel):
     """This is the class for Place
     Attributes:
         city_id: city id
