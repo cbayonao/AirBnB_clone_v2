@@ -47,16 +47,13 @@ class HBNBCommand(cmd.Cmd):
                 k = None
                 for arg in my_list:
                     if k:
-                        key = arg.split('=')
-                        if key[1][-1:] == '"':
-                            val = key[1][1:-1]
-                            if '_' in val:
-                                val = val.replace("_", " ")
-                        else:
-                            val = key[1]
-
-                        setattr(obj, key[0], val)
+                        arg2 = arg.split('=')
+                        var = arg2[1][1:-1]
+                        if '"' in var:
+                            var = var.replace("_", " ")
+                        setattr(obj, arg2[0], arg2[1])
                     k = True
+
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
