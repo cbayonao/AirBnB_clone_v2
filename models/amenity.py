@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, Base):
     """This is the class for Amenity
     Attributes:
         name: input name
