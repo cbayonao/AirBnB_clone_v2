@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """DBStorage - States and Cities"""
 from os import getenv
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from sqlalchemy import (create_engine)
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -31,10 +31,11 @@ class DBStorage:
         password = getenv("HBNB_MYSQL_PWD")
         host = getenv("HBNB_MYSQL_HOST")
         db = getenv("HBNB_MYSQL_DB")
+        env = getenv("HBNB_ENV")
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, db),
                                       pool_pre_ping=True)
-        if getenv("HBNB_ENV") == "test":
+        if env == "test":q
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
@@ -47,11 +48,11 @@ class DBStorage:
             obj = self.__session.query(self.classes()[cls])
         else:
             obj = self.__session.query(State).all()
-            obj = obj + self.__session.query(City).all()
-            obj = obj + self.__session.query(User).all()
-            # obj = obj + self.__session.query(Place).all()
-            # obj = obj + self.__session.query(Amenity).all()
-            # obj = obj + self.__session.query(Review).all()
+            obj += self.__session.query(City).all()
+            obj += self.__session.query(User).all()
+            obj += self.__session.query(Place).all()
+            obj += self.__session.query(Amenity).all()
+            obj += self.__session.query(Review).all()
         sql_dict = {}
         for o in obj:
             key = '{}.{}'.format(type(obj).__name__, o.id)
