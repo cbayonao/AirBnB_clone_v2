@@ -47,7 +47,7 @@ class DBStorage:
         returns a dictionary
         """
         sql_Dict = {}
-        dic = ['State', 'City']
+        dic = ['State', 'City', 'User', 'Place', 'Review', 'Amenity']
         if cls:
             cls = eval(cls)
             objects = self.__session.query(cls).all()
