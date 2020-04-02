@@ -54,7 +54,6 @@ class HBNBCommand(cmd.Cmd):
                                 val = val.replace("_", " ")
                         else:
                             val = key[1]
-
                         setattr(obj, key[0], val)
                     k = True
             obj.save()
@@ -132,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all()
+        objects = storage.all(line)
         my_list = []
         if not line:
             for key in objects:
