@@ -22,7 +22,8 @@ class DBStorage:
     """
     __engine = None
     __session = None
-    models = {User, State, City, Amenity, Place, Review}
+    #models = {User, State, City, Amenity, Place, Review}
+    models = {User, State, City}
 
     def __init__(self):
         """
@@ -67,9 +68,6 @@ class DBStorage:
             obj = self.__session.query(State).all()
             obj = obj + self.__session.query(City).all()
             obj = obj + self.__session.query(User).all()
-            obj = obj + self.__session.query(Place).all()
-            obj = obj + self.__session.query(Amenity).all()
-            obj = obj + self.__session.query(Review).all()
         sql_dict = {}
         for o in obj:
             key = '{}.{}'.format(type(obj).__name__, o.id)
