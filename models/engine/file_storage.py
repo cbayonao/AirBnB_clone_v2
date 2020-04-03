@@ -31,7 +31,6 @@ class FileStorage:
                 k = key.split('.')
                 if (k[0] == cls.__name__):
                     my_obj.update({key: obj})
-                # print("This is my key: {}".format(cls.__name__))
             return my_obj
         return FileStorage.__objects
 
@@ -63,6 +62,7 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
+
     def delete(self, obj=None):
             """Delete instance
             """
