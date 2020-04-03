@@ -1,6 +1,9 @@
-# HBNB
+# AirBnB_clone
+![Image of HBnB Clone](https://github.com/cbayonao/AirBnB_clone/blob/master/hbnb_clone.png?raw=true)
 
 This is the console /command interpreter for the Holberton Airbnb clone project. The console can be used to store objects in and retrieve objects from a JSON.
+
+![Image of HBnB Clone](https://s3.amazonaws.com/intranet-projects-files/concepts/74/hbnb_step2.png)
 
 ### Supported classes:
 * BaseModel
@@ -56,5 +59,6 @@ Ex:
 #### Authors
 
 ## Collaborators
-[Cristian Hurtado](https://github.com/cristian0497)
-[Camilo Bayona Orduz](https://www.bayona.me/)
+#### [Cristian Hurtado](https://github.com/cristian0497):smiley_cat:
+
+#### [Camilo Bayona Orduz](https://www.bayona.me/):neckbeard:
