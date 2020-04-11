@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-#!/usr/bin/python3
 from fabric.api import *
 import os.path
 import re
@@ -21,6 +20,7 @@ def do_pack():
         return cPath
     except:
         return None
+
 
 def do_deploy(archive_path):
     """
@@ -45,6 +45,7 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
 
 def deploy():
     """
