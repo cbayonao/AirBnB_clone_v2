@@ -28,6 +28,10 @@ def do_deploy(archive_path):
     Deploy archive!
     """
     try:
+        if not os.path.exists(archive_path):
+            print("No llega archive_path")
+            return False
+
         fileComp = archive_path.split("/")[1].split(".")[0]
         path = "/data/web_static/releases/{}".format(fileComp)
 
@@ -63,10 +67,8 @@ def deploy():
     """
     Full deployment
     """
-    archive_path = do_pack()
-
-    if archive_path is None:
-        print("No hay archive_path en Deploy")
+    try:
+        pack = do_pack()
+    except Exception:
         return False
-
-    return do_deploy(archive_path)
+    return do_deploy(pack)
