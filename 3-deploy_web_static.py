@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 from fabric.api import *
-import os.path
+import os
 from datetime import datetime
 env.hosts = ['35.196.71.231', '3.89.186.246']
-env.user = 'ubuntu'
 
 
 def do_pack():
@@ -11,11 +10,11 @@ def do_pack():
     Comment empty
     """
     try:
-        local("mkdir -p versions")
         now = datetime.now()
         todayDate = now.strftime("%Y%m%d%H%M%S")
         cPath = "versions/web_static_" + todayDate
-        local("tar -cvzf {}.tgz web_static".format(cPath))
+        local("mkdir -p versions")
+        local("tar -cvzf {} web_static".format(cPath))
         print("Archivo empaquetado")
         return cPath
     except:
@@ -27,35 +26,28 @@ def do_deploy(archive_path):
     """
     Deploy archive!
     """
+    if not os.path.isfile(archive_path):
+        return False
     try:
-        if not os.path.exists(archive_path):
-            print("No llega archive_path")
-            return False
-
         fileComp = archive_path.split("/")[1].split(".")[0]
         path = "/data/web_static/releases/{}".format(fileComp)
-
-        put(archive_path, "/tmp/")
+        print(fileComp)
+        print(path)
+        put(archive_path, "/tmp/{:s}.tgz".format(fileComp))
         print("Archivo puesto")
-
         run("mkdir -p {}".format(path))
         print("Carpeta path creada")
-
-        run("tar -xvzf /tmp/{}.tgz -C {}".format(fileComp, path))
+        run("tar -xzf /tmp/{}.tgz -C {}/".format(fileComp, path))
         print("Descomprimido")
-
         run("sudo mv /data/web_static/releases/{}/web_static/* \
         /data/web_static/releases/{}/".format(fileComp, fileComp))
         print("Archivos movidos")
-
         run("sudo rm -rf /tmp/{}.tgz".format(fileComp))
         print("Archivo tgz eliminado")
         run("sudo rm -rf /data/web_static/current")
-
         run("sudo ln -sf /data/web_static/releases/{}\
         /data/web_static/current".format(fileComp))
         print("Simbolik link ready")
-
         run("rm -rf /data/web_static/releases/{}/web_static".format(fileComp))
         print("Eliminando web_static remotamente")
         return True
@@ -69,6 +61,6 @@ def deploy():
     """
     try:
         pack = do_pack()
+        return do_deploy(pack)
     except Exception:
         return False
-    return do_deploy(pack)
