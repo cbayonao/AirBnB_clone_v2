@@ -15,10 +15,8 @@ def do_pack():
         cPath = "versions/web_static_" + todayDate
         local("mkdir -p versions")
         local("tar -cvzf {} web_static".format(cPath))
-        print("Archivo empaquetado")
         return cPath
     except:
-        print("No se pudo empaquetar")
         return None
 
 
@@ -31,25 +29,16 @@ def do_deploy(archive_path):
     try:
         fileComp = archive_path.split("/")[1].split(".")[0]
         path = "/data/web_static/releases/{}".format(fileComp)
-        print(fileComp)
-        print(path)
         put(archive_path, "/tmp/{:s}.tgz".format(fileComp))
-        print("Archivo puesto")
         run("mkdir -p {}".format(path))
-        print("Carpeta path creada")
         run("tar -xzf /tmp/{}.tgz -C {}/".format(fileComp, path))
-        print("Descomprimido")
         run("sudo mv /data/web_static/releases/{}/web_static/* \
         /data/web_static/releases/{}/".format(fileComp, fileComp))
-        print("Archivos movidos")
         run("sudo rm -rf /tmp/{}.tgz".format(fileComp))
-        print("Archivo tgz eliminado")
         run("sudo rm -rf /data/web_static/current")
         run("sudo ln -sf /data/web_static/releases/{}\
         /data/web_static/current".format(fileComp))
-        print("Simbolik link ready")
         run("rm -rf /data/web_static/releases/{}/web_static".format(fileComp))
-        print("Eliminando web_static remotamente")
         return True
     except:
         return False
