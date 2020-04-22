@@ -2,7 +2,7 @@
 """DBStorage - States and Cities"""
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 from models.base_model import BaseModel, Base
 from models.user import User
 from models.state import State
@@ -31,15 +31,16 @@ class DBStorage:
         create the engine (self.__engine)
         the engine must be linked to the MySQL database and user created
         """
-        user = getenv("HBNB_MYSQL_USER")
-        password = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST")
-        db = getenv("HBNB_MYSQL_DB")
-        env = getenv("HBNB_ENV")
+        HBNB_MYSQL_USER = getenv("HBNB_MYSQL_USER")
+        HBNB_MYSQL_PWD = getenv("HBNB_MYSQL_PWD")
+        HBNB_MYSQL_HOST = getenv("HBNB_MYSQL_HOST")
+        HBNB_MYSQL_DB = getenv("HBNB_MYSQL_DB")
+        HBNB_ENV = getenv("HBNB_ENV")
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(user, password, host, db),
+                                      format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
+                                             HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                                       pool_pre_ping=True)
-        if env == "test":
+        if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -49,7 +50,6 @@ class DBStorage:
         sql_Dict = {}
         dic = ['State', 'City', 'User', 'Place', 'Review', 'Amenity']
         if cls:
-            cls = eval(cls)
             objects = self.__session.query(cls).all()
             for obj in objects:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
@@ -96,3 +96,6 @@ class DBStorage:
                                       expire_on_commit=False)
         Session = scoped_session(self.__session)
         self.__session = Session()
+
+    def close(self):
+        self.__session.close()
