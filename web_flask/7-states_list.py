@@ -8,6 +8,7 @@ from models.state import State
 
 app = Flask(__name__)
 
+
 @app.teardown_appcontext
 def handle_close(self):
     """
@@ -22,6 +23,7 @@ def handle_states():
     all_states = storage.all(State).values()
     sort_states = sorted(all_states, key=lambda state: state.name)
     return render_template('7-states_list.html', states=sort_states)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
