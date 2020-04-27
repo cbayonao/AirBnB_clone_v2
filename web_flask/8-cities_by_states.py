@@ -8,6 +8,7 @@ from models.state import State
 from models.city import City
 app = Flask(__name__)
 
+
 @app.teardown_appcontext
 def handle_close(self):
     """
